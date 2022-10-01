@@ -1,5 +1,6 @@
 const pool = require('../databasepg');
 const bcrypt = require('bcryptjs');
+const createError = require('http-errors');
 
 registerUser = (req,res) => {
     console.log(req.body);
@@ -8,7 +9,7 @@ registerUser = (req,res) => {
     pool.query('SELECT login_email FROM logins_table WHERE login_email = $1', [email])
         .then((result) => {
             if(result.rowCount > 0)
-                res.send('user already exists');
+                throw createError(409,'user already exists');
             else{
                 return bcrypt.hash(password, 8);
             }
@@ -24,7 +25,7 @@ registerUser = (req,res) => {
         }) 
         .catch((err) => {
             console.log(err);
-            res.send(err);
+            res.status(err.status).send(err.message);
         })
 };
 

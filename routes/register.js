@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const registerUser = require('../controllers/registerUserController');
+const registerUserController = require('../controllers/registerUserController');
 
 router.get('/', (req,res) => {
     res.send("yet to implement...");
@@ -10,7 +10,7 @@ router.put('/', (req,res) => {
     res.send("yet to implement...");
 });
 
-router.post('/', registerUser);
+router.post('/', registerUserController);
 
 router.delete('/', (req,res) => {
     res.send("yet to implement...");

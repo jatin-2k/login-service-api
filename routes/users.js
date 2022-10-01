@@ -4,7 +4,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  pool.query('SELECT * from test_table;')
+  pool.query('SELECT login_username from logins_table;')
   .then((RESULT) => {
     res.send(RESULT.rows);
   })
