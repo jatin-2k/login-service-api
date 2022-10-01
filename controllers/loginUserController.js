@@ -27,7 +27,7 @@ loginUser = (req, res, next) => {
                 })
                 .then((userdata) => { // generate token for the login
                     const user = { username: userdata.login_username };
-                    const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+                    const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '12h'});
                     res.json({accessToken: token});
                 })
                 .catch((err) => {
