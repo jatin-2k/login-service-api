@@ -1,17 +1,36 @@
 var express = require('express');
-var pool = require('../databasepg');
 var router = express.Router();
+const registerUserController = require('../controllers/registerUserController');
+const retrieveUsersController = require('../controllers/retrieveUsersController');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  pool.query('SELECT login_username from logins_table;')
-  .then((RESULT) => {
-    res.send(RESULT.rows);
-  })
-  .catch((err) => {
-    console.log(err);
-    res.send(err);
-  });
+/* users at /users. endpoint*/
+router.get('/', retrieveUsersController);
+
+router.put('/', (req,res) => {
+  res.send("yet to implement...");
+});
+
+router.post('/', registerUserController);
+
+router.delete('/', (req,res) => {
+  res.send("yet to implement...");
+});
+
+/* user at /users/{username} endpoint*/
+router.get('/:userId', (req,res) => {
+  res.send("yet to implement it...");
+});
+
+router.put('/:userId', (req,res) => {
+  res.send(req.params);
+});
+
+router.post('/:userId', (req,res) => {
+  res.send("yet to implement it...");
+});
+
+router.delete('/:userId', (req,res) => {
+  res.send("yet to implement it...");
 });
 
 module.exports = router;
