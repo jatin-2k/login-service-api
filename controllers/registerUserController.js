@@ -16,8 +16,8 @@ registerUser = (req,res) => {
         })
         .then((hashedPass) => {
             return pool.query(`
-                INSERT into logins_table(login_username, login_email, login_password)
-                VALUES ($1,$2,$3);
+                INSERT into logins_table(login_id, login_username, login_email, login_password)
+                VALUES (gen_random_uuid(),$1,$2,$3);
             `,[username, email, hashedPass]);
         })
         .then((result) => {
