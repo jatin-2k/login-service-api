@@ -1,10 +1,15 @@
 const pool = require('../databasepg');
 const bcrypt = require('bcryptjs');
 const createError = require('http-errors');
+const { validationResult } = require('express-validator');
 
 registerUser = (req,res) => {
     console.log(req.body);
-
+    var err = validationResult(req);
+    if(!err.isEmpty()){
+        res.status(403).send(err.mapped());
+        return;
+    }
     const {username, email, password} = req.body;
     pool.query('SELECT login_email FROM logins_table WHERE login_email = $1', [email])
         .then((result) => {

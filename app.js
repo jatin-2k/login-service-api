@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var authenticationMiddleware = require('./middlewares/authentication');
 var adminAuthorisationMiddleware = require('./middlewares/adminAuthorisation');
+var { check } = require('express-validator');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -25,8 +26,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Routes
 app.use('/', indexRouter);
-app.use('/users', [authenticationMiddleware, adminAuthorisationMiddleware], usersRouter);
-app.use('/register', registerRouter);
+
+app.use('/users', [
+  authenticationMiddleware, 
+  adminAuthorisationMiddleware,
+  check('username')
+    .isLength({ min: 5 }).withMessage("must be minimum 5 charas")
+    .custom(value => !/\s/.test(value)).withMessage('No spaces are allowed in the username'),
+  check('password').isLength({ min: 8 }).withMessage("Password should be 8 characters"),
+  check('email').isEmail().withMessage("email not valid")
+], usersRouter);
+
+app.use('/register',[
+  check("username")
+    .isLength({ min: 5 }).withMessage("must be minimum 5 charas")
+    .custom(value => !/\s/.test(value)).withMessage('No spaces are allowed in the username'),
+  check("password")
+    .isLength({ min: 8 }).withMessage("Password should be 8 characters"),
+  check('email').isEmail().withMessage("email not valid")
+], registerRouter);
+
 app.use('/login',loginRouter);
 
 
